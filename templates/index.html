@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form action="" method="POST">
+    <textarea name="data" cols="40" rows="5">А-Б, А-В, В-Б, В-Ж, В-Е, В-Г, Б-Д, Б-Г, Г-Д, Д-Ж, Г-Ж, Е-Ж</textarea>
+    <br>
+    <button type="submit">Go</button>
+</form>
+
+{% if data %}
+{% if image %}
+    <img src='data:image/png; base64,{{image}}' >
+{% endif %}
+
+
+<b>Degree:</b>
+<p>
+{% for x in degree %}
+    p({{x}}) = {{degree[x]}};
+{% endfor%}
+</p>
+<table class="data">
+     <th >Images</th>
+        <th>Preimages</th>
+    <tr>
+        <td>
+        {% for x in im%}
+            <p>{{x}}: { <i> {% for item in im[x]%} {{ item }} {% endfor%}</i>}</p>
+        {% endfor%}
+        </td>
+
+        <td>
+        {% for x in preim%}
+        <p>{{x}}⁻¹: { <i> {% for item in preim[x]%} {{ item }} {% endfor%}</i>}</p>
+        {% endfor%}
+        </td>
+    </tr>
+</table>
+
+
+<table class="keywords" cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        {% for item in adMatrix[0] %}
+        <th>
+            <span>{{item}}</span>
+        </th>
+        {% endfor%}
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in adMatrix[1:] %}
+      <tr>
+          <td class="lalign">{{row[0]}}</td>
+          {% for item in row[1:] %}
+
+        <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="{{adMatrix[0]|length}}">Adjacency Matrix</td>
+        </tr>
+    </tfoot>
+  </table>
+
+
+<table class="keywords" cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        {% for item in inMatrix[0] %}
+        <th>
+            <span>{{item}}</span>
+        </th>
+        {% endfor%}
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in inMatrix[1:] %}
+      <tr>
+          <td class="lalign">{{row[0]}}</td>
+          {% for item in row[1:] %}
+
+        <td>{{ item }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="{{inMatrix[0]|length}}">Incidence Matrix</td>
+        </tr>
+    </tfoot>
+  </table>
+
+{% endif %}
+{% endblock %}
