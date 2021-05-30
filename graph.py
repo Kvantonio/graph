@@ -12,6 +12,9 @@ class Graph(object):
     def getGraph(self):
         return self.graph
 
+    def getVertexes(self):
+        return self.graph.keys()
+
     def getBridges(self):
         return self.bridges
 
@@ -26,15 +29,12 @@ class Graph(object):
 
     def addToGraph(self, x1, x2):
         self.bridges.append([x1, x2])
-        if x1 in self.graph.keys():
-            self.graph[x1].append(x2)
-        elif x1 not in self.graph.keys() and x2 in self.graph.keys():
+        if x1 not in self.graph.keys():
             self.graph[x1] = [x2]
         else:
-            self.graph[x1] = [x2]
-            self.graph[x2] = []
+            self.graph[x1].append(x2)
 
-        self.graph = {x: self.graph[x] for x in sorted(self.graph.keys())}
+        self.graph = {x: list(set(self.graph[x])) for x in sorted(self.graph.keys())}
         self.bridges = [bridge for bridge in sorted(
             self.bridges,
             key=lambda x: (x[0], x[1])
@@ -98,3 +98,8 @@ class Graph(object):
         tempfile = fig.pipe(format='png')
         encoded = base64.b64encode(tempfile).decode('utf-8')
         return encoded
+
+    def drf(self, bridge):
+        pass
+
+

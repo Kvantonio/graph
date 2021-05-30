@@ -25,6 +25,7 @@ def index():
         inMatrix = graph.incidenceMatrixToTable()
         t = graph.drawGraph()
         image = graph.graphImgToBytes(t)
+        vertexes = graph.getVertexes()
 
         return render_template('index.html',
                                data=True,
@@ -33,7 +34,9 @@ def index():
                                preim=preim,
                                adMatrix=adMatrix,
                                inMatrix=inMatrix,
-                               image=image)
+                               image=image,
+                               vertexes=vertexes
+                               )
 
     return render_template('index.html')
 

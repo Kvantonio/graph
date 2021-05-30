@@ -14,6 +14,7 @@
 {% endif %}
 
 
+
 <b>Degree:</b>
 <p>
 {% for x in degree %}
@@ -97,6 +98,14 @@
         </tr>
     </tfoot>
   </table>
+
+  <h3>Algorithms</h3>
+        <select name="vertex" id="">
+    {% for v in vertexes %}
+        <option value="{{ v }}">{{ v }}</option>
+    {% endfor %}
+    </select>
+
 
 {% endif %}
 {% endblock %}
