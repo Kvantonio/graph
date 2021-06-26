@@ -27,7 +27,7 @@
     <tr>
         <td>
         {% for x in im%}
-            <p>{{x}}: { <i> {% for item in im[x]%} {{ item }} {% endfor%}</i>}</p>
+            <p>{{x.name}}: { <i> {% for item in x.connections%} {{ item.name }} {% endfor%}</i>}</p>
         {% endfor%}
         </td>
 
