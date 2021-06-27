@@ -33,6 +33,8 @@ class Vertex:
         """ add NEW connection with this vertex, if vertex is exist nothing happens """
         if not self.find_connection(connection):
             self.connections.append(connection)
+            self.connections = sorted(self.connections,
+                                      key=lambda x: x.name)
 
 
 class Graph:
@@ -104,6 +106,9 @@ class Graph:
             Vertex2 if it was created has no connections
             but will be added to graph.
         """
+        if len(vertex1) < 1 or len(vertex2) < 1:
+            return
+
         isl1 = self.get_or_create_island(vertex1)
         isl2 = self.get_or_create_island(vertex2)
 
@@ -115,6 +120,12 @@ class Graph:
             self.bridges,
             key=lambda x: (x[0], x[1])
         )
+
+    def multiple_add_to_graph(self, vertices: list):
+        """ Method to add multiple vertices """
+        check = list(filter(lambda x: (len(x) == 2 and len(x[0]) > 0 and len(x[1]) > 0), vertices))
+        for vertex in check:
+            self.add_to_graph(vertex[0], vertex[1])
 
     def calc_degree(self):
         """ Calculates the degree of the vertices of the graph"""
