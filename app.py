@@ -17,15 +17,15 @@ def index():
         graph = Graph()
         data = request.form.get('data')
 
-        graph.parseGraph(data)
-        degree = graph.calcDegree()
-        im = graph.getVertexesImage()
-        preim = graph.getPreimage()
-        adMatrix = graph.adjacencyMatrixToTable()
-        inMatrix = graph.incidenceMatrixToTable()
-        t = graph.drawGraph()
-        image = graph.graphImgToBytes(t)
-        vertexes = graph.getVertexes()
+        graph.parse_graph(data)
+        degree = graph.calc_degree()
+        im = graph.get_vertexes_image()
+        preim = graph.get_vertexes_preimage()
+        adMatrix = graph.adjacency_matrix_to_table()
+        inMatrix = graph.incidence_matrix_to_table()
+        t = graph.draw_graph()
+        image = graph.graph_image_to_bytes(t)
+        vertexes = graph.get_name_vertexes()
 
         return render_template('index.html',
                                data=True,

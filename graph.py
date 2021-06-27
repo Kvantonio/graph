@@ -4,65 +4,57 @@ import re  # noqa: I201, I100
 from graphviz import Digraph  # noqa: I201, I100
 
 
-class Island(object):
+class Vertex(object):
     def __init__(self, name):
         self.name = name
         self.connections = []
         self.color = None
 
-    def getName(self):
-        return self.name
-    
-    def getConnections(self):
-        return self.connections
-
-    def getNameOfConnections(self):
+    def get_name_of_connections(self):
         return [x.name for x in self.connections]
 
-    def findConnection(self, name):
+    def find_connection(self, name):
         for item in self.connections:
             if item.name == name:
-                return True
+                return item
         return False
 
-    def addConnection(self, c):
-        if not self.findConnection(c):
+    def add_connection(self, c):
+        if not self.find_connection(c):
             self.connections.append(c)
 
 
 class Graph(object):
     def __init__(self):
-        self.graph = []
+        self.vertexes = []
         self.bridges = []
 
-    def getGraph(self):
-        return self.graph
+    def get_vertexes(self):
+        return self.vertexes
 
-    def getVertexes(self):
-        return [x.name for x in self.graph]
+    def get_name_vertexes(self):
+        return [x.name for x in self.vertexes]
 
-    def getBridges(self):
+    def get_bridges(self):
         return self.bridges
 
-    def findIslandInGraph(self, name):
-        for item in self.graph:
+    def find_vertex_in_graph(self, name):
+        for item in self.vertexes:
             if item.name == name:
                 return item
 
         return None
 
-
     def get_or_create_island(self, name):
-        for item in self.graph:
+        for item in self.vertexes:
             if item.name == name:
                 return item
 
-        island = Island(name)
-        self.graph.append(island)
+        island = Vertex(name)
+        self.vertexes.append(island)
         return island
 
-
-    def parseGraph(self, data):
+    def parse_graph(self, data):
         temp = [bridge for bridge in re.sub(r'([\r\n\s]+)',
                                             '', data).split(',')]
         temp = list(set(temp))
@@ -71,14 +63,14 @@ class Graph(object):
                            key=lambda x: (x[0], x[1]))
 
         for br in temp:
-            self.addToGraph(br[0], br[1])
+            self.add_to_graph(br[0], br[1])
 
-    def addToGraph(self, x1, x2):
+    def add_to_graph(self, x1, x2):
         isl1 = self.get_or_create_island(x1)
         isl2 = self.get_or_create_island(x2)
         
-        isl1.addConnection(isl2)
-        self.graph = sorted(self.graph, key=lambda x: x.name)
+        isl1.add_connection(isl2)
+        self.vertexes = sorted(self.vertexes, key=lambda x: x.name)
 
         self.bridges.append([x1, x2])
         self.bridges = sorted(
@@ -86,58 +78,56 @@ class Graph(object):
             key=lambda x: (x[0], x[1])
         )
 
-    def calcDegree(self):
-        return {x.getName(): len(x.getConnections()) for x in self.graph}
+    def calc_degree(self):
+        return {x.getName(): len(x.getConnections()) for x in self.vertexes}
 
-    def createAdjacencyMatrix(self):
-        res = [[0 for _ in self.getVertexes()] for _ in self.getVertexes()]
-        for colum, x in enumerate(self.getVertexes()):
-            for row, items in enumerate(self.getVertexes()):
-                t = self.findIslandInGraph(items)
+    def create_adjacency_matrix(self):
+        res = [[0 for _ in self.get_name_vertexes()] for _ in self.get_name_vertexes()]
+        for column, x in enumerate(self.get_name_vertexes()):
+            for row, items in enumerate(self.get_name_vertexes()):
+                t = self.find_vertex_in_graph(items)
                 if x in t.getNameOfConnections():
-                    res[row][colum] = 1
+                    res[row][column] = 1
         return res
 
-    def adjacencyMatrixToTable(self):
-        temp = self.createAdjacencyMatrix()
-        res = [[''] + list(self.getVertexes())] + \
-              [[item] + temp[i] for i, item in enumerate(self.getVertexes())]
+    def adjacency_matrix_to_table(self):
+        temp = self.create_adjacency_matrix()
+        res = [[''] + list(self.get_name_vertexes())] + \
+              [[item] + temp[i] for i, item in enumerate(self.get_name_vertexes())]
         return res
 
-    def createIncidenceMatrix(self):
-        res = [[0 for _ in range(sum(list(map(lambda x: len(x.getConnections()), self.graph))))]
-               for _ in self.getVertexes()]
+    def create_incidence_matrix(self):
+        res = [[0 for _ in range(sum(list(map(lambda x: len(x.getConnections()), self.vertexes))))]
+               for _ in self.get_name_vertexes()]
         
-        for i in range(len(self.getVertexes())):
+        for i in range(len(self.get_name_vertexes())):
             for j, bridge in enumerate(self.bridges):
-                if list(self.getVertexes())[i] == bridge[0]:
+                if list(self.get_name_vertexes())[i] == bridge[0]:
                     res[i][j] = 1
-                elif list(self.getVertexes())[i] == bridge[1]:
+                elif list(self.get_name_vertexes())[i] == bridge[1]:
                     res[i][j] = -1
-
         return res
 
-    def incidenceMatrixToTable(self):
-        temp = self.createIncidenceMatrix()
+    def incidence_matrix_to_table(self):
+        temp = self.create_incidence_matrix()
         res = list([[''] + ['q' + str(i + 1)
                             for i, _ in enumerate(temp[0])]])
-        res += [[item] + temp[i] for i, item in enumerate(self.getVertexes())]
+        res += [[item] + temp[i] for i, item in enumerate(self.get_name_vertexes())]
         return res
 
+    def get_vertexes_image(self):
+        return {x.name: x.get_name_of_connections() for x in self.vertexes}
 
-    def getVertexesImage(self):
-        return {x.name: x.getNameOfConnections() for x in self.graph}
-
-    def getPreimage(self):
-        res = {x: [] for x in self.getVertexes()}
-        for x in self.getVertexes():
-            for items in self.getVertexes():
-                t = self.findIslandInGraph(items)
+    def get_vertexes_preimage(self):
+        res = {x: [] for x in self.get_name_vertexes()}
+        for x in self.get_name_vertexes():
+            for items in self.get_name_vertexes():
+                t = self.find_vertex_in_graph(items)
                 if x in t.getNameOfConnections():
                     res[x].append(items)
         return res
 
-    def drawGraph(self):
+    def draw_graph(self):
         f = Digraph('graph', filename='static/fsm.gv',
                     node_attr={'color': 'lightblue2',
                                'style': 'filled', 'shape': 'circle'})
@@ -147,7 +137,7 @@ class Graph(object):
         return f
 
     @staticmethod
-    def graphImgToBytes(fig):
+    def graph_image_to_bytes(fig):
         tempfile = fig.pipe(format='png')
         encoded = base64.b64encode(tempfile).decode('utf-8')
         return encoded
