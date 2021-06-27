@@ -19,9 +19,9 @@ class Vertex(object):
                 return item
         return False
 
-    def add_connection(self, c):
-        if not self.find_connection(c):
-            self.connections.append(c)
+    def add_connection(self, connection):
+        if not self.find_connection(connection):
+            self.connections.append(connection)
 
 
 class Graph(object):
@@ -59,34 +59,34 @@ class Graph(object):
                                             '', data).split(',')]
         temp = list(set(temp))
         temp = sorted(list(filter(lambda br: len(br) == 2,
-                           [br.split('-') for br in temp])),
-                           key=lambda x: (x[0], x[1]))
+                                  [br.split('-') for br in temp])),
+                      key=lambda x: (x[0], x[1]))
 
-        for br in temp:
-            self.add_to_graph(br[0], br[1])
+        for bridge in temp:
+            self.add_to_graph(bridge[0], bridge[1])
 
-    def add_to_graph(self, x1, x2):
-        isl1 = self.get_or_create_island(x1)
-        isl2 = self.get_or_create_island(x2)
-        
+    def add_to_graph(self, vertex1, vertex2):
+        isl1 = self.get_or_create_island(vertex1)
+        isl2 = self.get_or_create_island(vertex2)
+
         isl1.add_connection(isl2)
         self.vertexes = sorted(self.vertexes, key=lambda x: x.name)
 
-        self.bridges.append([x1, x2])
+        self.bridges.append([vertex1, vertex2])
         self.bridges = sorted(
             self.bridges,
             key=lambda x: (x[0], x[1])
         )
 
     def calc_degree(self):
-        return {x.getName(): len(x.getConnections()) for x in self.vertexes}
+        return {x.getName(): len(x.connections) for x in self.vertexes}
 
     def create_adjacency_matrix(self):
         res = [[0 for _ in self.get_name_vertexes()] for _ in self.get_name_vertexes()]
-        for column, x in enumerate(self.get_name_vertexes()):
-            for row, items in enumerate(self.get_name_vertexes()):
-                t = self.find_vertex_in_graph(items)
-                if x in t.getNameOfConnections():
+        for column, vertex in enumerate(self.get_name_vertexes()):
+            for row, intersection in enumerate(self.get_name_vertexes()):
+                crossed_vertex = self.find_vertex_in_graph(intersection)
+                if vertex in crossed_vertex.get_name_of_connections():
                     res[row][column] = 1
         return res
 
@@ -97,9 +97,9 @@ class Graph(object):
         return res
 
     def create_incidence_matrix(self):
-        res = [[0 for _ in range(sum(list(map(lambda x: len(x.getConnections()), self.vertexes))))]
+        res = [[0 for _ in range(sum(list(map(lambda x: len(x.connections), self.vertexes))))]
                for _ in self.get_name_vertexes()]
-        
+
         for i in range(len(self.get_name_vertexes())):
             for j, bridge in enumerate(self.bridges):
                 if list(self.get_name_vertexes())[i] == bridge[0]:
@@ -120,37 +120,30 @@ class Graph(object):
 
     def get_vertexes_preimage(self):
         res = {x: [] for x in self.get_name_vertexes()}
-        for x in self.get_name_vertexes():
-            for items in self.get_name_vertexes():
-                t = self.find_vertex_in_graph(items)
-                if x in t.getNameOfConnections():
-                    res[x].append(items)
+        for vertex in self.get_name_vertexes():
+            for intersection in self.get_name_vertexes():
+                crossed_vertex = self.find_vertex_in_graph(intersection)
+                if vertex in crossed_vertex.get_name_of_connections():
+                    res[vertex].append(intersection)
         return res
 
     def draw_graph(self):
-        f = Digraph('graph', filename='static/fsm.gv',
-                    node_attr={'color': 'lightblue2',
-                               'style': 'filled', 'shape': 'circle'})
-        f.attr(rankdir='A', size='1000')
+        file = Digraph('graph', filename='static/fsm.gv',
+                       node_attr={'color': 'lightblue2',
+                                  'style': 'filled', 'shape': 'circle'})
+        file.attr(rankdir='A', size='1000')
 
-        f.edges(self.bridges)
-        return f
+        file.edges(self.bridges)
+        return file
 
     @staticmethod
     def graph_image_to_bytes(fig):
-        tempfile = fig.pipe(format='png')
-        encoded = base64.b64encode(tempfile).decode('utf-8')
+        temp_file = fig.pipe(format='png')
+        encoded = base64.b64encode(temp_file).decode('utf-8')
         return encoded
 
     def drf(self, bridge):
         pass
 
-
-
-
-
 # g = Graph()
-
 # g.parseGraph('А-Б, А-В, В-Б, В-Ж, В-Е, В-Г, Б-Д, Б-Г, Г-Д, Д-Ж, Г-Ж, Е-Ж')
-
-
