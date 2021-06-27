@@ -121,6 +121,7 @@ class Graph:
         return {x.name: len(x.connections) for x in self.vertices}
 
     def create_adjacency_matrix(self):
+        """ Create graph adjacency matrix """
         res = [[0 for _ in self.get_name_vertices()] for _ in self.get_name_vertices()]
         for column, vertex in enumerate(self.get_name_vertices()):
             for row, intersection in enumerate(self.get_name_vertices()):
@@ -130,12 +131,20 @@ class Graph:
         return res
 
     def adjacency_matrix_to_table(self):
+        """
+            Converts adjacency matrix to tabular form.
+            Immediately uses the creation method so no
+            data transfer is required.
+
+            !!! TODO: remake the method so that it can accept a matrix
+        """
         temp = self.create_adjacency_matrix()
         res = [[''] + list(self.get_name_vertices())] + \
               [[item] + temp[i] for i, item in enumerate(self.get_name_vertices())]
         return res
 
     def create_incidence_matrix(self):
+        """ Create graph incidence matrix """
         res = [[0 for _ in range(sum(list(map(lambda x: len(x.connections), self.vertices))))]
                for _ in self.get_name_vertices()]
 
@@ -148,6 +157,14 @@ class Graph:
         return res
 
     def incidence_matrix_to_table(self):
+        """
+            Converts incidence matrix to tabular form.
+            Immediately uses the creation method so no
+            data transfer is required.
+
+            !!! TODO: remake the method so that it can accept a matrix
+            !!! TODO: correctly display degree for oriental graph
+        """
         temp = self.create_incidence_matrix()
         res = list([[''] + ['q' + str(i + 1)
                             for i, _ in enumerate(temp[0])]])
@@ -155,9 +172,11 @@ class Graph:
         return res
 
     def get_vertices_image(self):
+        """ Return vertices image """
         return {x.name: x.get_name_of_connections() for x in self.vertices}
 
     def get_vertices_preimage(self):
+        """ Return vertices pre-image """
         res = {x: [] for x in self.get_name_vertices()}
         for vertex in self.get_name_vertices():
             for intersection in self.get_name_vertices():
@@ -167,6 +186,7 @@ class Graph:
         return res
 
     def draw_graph(self):
+        """ Creates a graph for displaying in the site) """
         file = Digraph('graph', filename='static/fsm.gv',
                        node_attr={'color': 'lightblue2',
                                   'style': 'filled', 'shape': 'circle'})
@@ -177,11 +197,13 @@ class Graph:
 
     @staticmethod
     def graph_image_to_bytes(fig):
+        """ Convert image for bytes """
         temp_file = fig.pipe(format='png')
         encoded = base64.b64encode(temp_file).decode('utf-8')
         return encoded
 
-    def drf(self, bridge):
+    def dfs(self, bridge):
+        """ depth-first search for graph """
         pass
 
 # g = Graph()
