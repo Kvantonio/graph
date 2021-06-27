@@ -84,7 +84,7 @@ class Graph:
         )
 
     def calc_degree(self):
-        return {x.getName(): len(x.connections) for x in self.vertexes}
+        return {x.name: len(x.connections) for x in self.vertexes}
 
     def create_adjacency_matrix(self):
         res = [[0 for _ in self.get_name_vertexes()] for _ in self.get_name_vertexes()]
