@@ -4,7 +4,7 @@ import re  # noqa: I201, I100
 from graphviz import Digraph  # noqa: I201, I100
 
 
-class Vertex(object):
+class Vertex:
     def __init__(self, name):
         self.name = name
         self.connections = []
@@ -24,7 +24,7 @@ class Vertex(object):
             self.connections.append(connection)
 
 
-class Graph(object):
+class Graph:
     def __init__(self):
         self.vertexes = []
         self.bridges = []
@@ -55,8 +55,7 @@ class Graph(object):
         return island
 
     def parse_graph(self, data):
-        temp = [bridge for bridge in re.sub(r'([\r\n\s]+)',
-                                            '', data).split(',')]
+        temp = re.sub(r'([\r\n\s]+)', '', data).split(',')
         temp = list(set(temp))
         temp = sorted(list(filter(lambda br: len(br) == 2,
                                   [br.split('-') for br in temp])),
