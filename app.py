@@ -22,22 +22,22 @@ def index():
 
         graph.parse_graph(data)
         degree = graph.calc_degree()
-        vertexes_image = graph.get_vertexes_image()
-        pre_image = graph.get_vertexes_preimage()
+        vertices_image = graph.get_vertices_image()
+        pre_image = graph.get_vertices_preimage()
         adjacency_matrix = graph.adjacency_matrix_to_table()
         incidence_matrix = graph.incidence_matrix_to_table()
         image = graph.graph_image_to_bytes(graph.draw_graph())
-        vertexes = graph.get_name_vertexes()
+        vertices = graph.get_name_vertices()
 
         return render_template('index.html',
                                data=True,
                                degree=degree,
-                               im=vertexes_image,
+                               im=vertices_image,
                                preim=pre_image,
                                adMatrix=adjacency_matrix,
                                inMatrix=incidence_matrix,
                                image=image,
-                               vertexes=vertexes
+                               vertices=vertices
                                )
 
     return render_template('index.html')
