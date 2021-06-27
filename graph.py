@@ -124,6 +124,10 @@ class Graph(object):
         res += [[item] + temp[i] for i, item in enumerate(self.getVertexes())]
         return res
 
+
+    def getVertexesImage(self):
+        return {x.name: x.getNameOfConnections() for x in self.graph}
+
     def getPreimage(self):
         res = {x: [] for x in self.getVertexes()}
         for x in self.getVertexes():
@@ -155,22 +159,8 @@ class Graph(object):
 
 
 
-g = Graph()
+# g = Graph()
 
-g.parseGraph('А-Б, А-В, В-Б, В-Ж, В-Е, В-Г, Б-Д, Б-Г, Г-Д, Д-Ж, Г-Ж, Е-Ж')
+# g.parseGraph('А-Б, А-В, В-Б, В-Ж, В-Е, В-Г, Б-Д, Б-Г, Г-Д, Д-Ж, Г-Ж, Е-Ж')
 
 
-print('________')
-
-for i in g.getGraph():
-    print(i.name, i.getNameOfConnections())
-
-print('*********************')
-
-print(g.createAdjacencyMatrix())
-print('*********************')
-
-# print(g.adjacencyMatrixToTable())
-
-print('()&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-print(g.createIncidenceMatrix())

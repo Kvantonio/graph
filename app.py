@@ -19,7 +19,7 @@ def index():
 
         graph.parseGraph(data)
         degree = graph.calcDegree()
-        im = graph.getGraph()
+        im = graph.getVertexesImage()
         preim = graph.getPreimage()
         adMatrix = graph.adjacencyMatrixToTable()
         inMatrix = graph.incidenceMatrixToTable()
