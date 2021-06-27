@@ -1,3 +1,7 @@
+"""
+    Module for working with graph
+"""
+
 import base64  # noqa: I201, I100
 import re  # noqa: I201, I100
 
@@ -5,6 +9,7 @@ from graphviz import Digraph  # noqa: I201, I100
 
 
 class Vertex:
+    """ Class for work and storing data of the vertex of the graph """
     def __init__(self, name):
         self.name = name
         self.connections = []
@@ -25,6 +30,7 @@ class Vertex:
 
 
 class Graph:
+    """ Class for working and displaying the graph """
     def __init__(self):
         self.vertexes = []
         self.bridges = []
@@ -55,7 +61,7 @@ class Graph:
         return island
 
     def parse_graph(self, data):
-        temp = re.sub(r'([\r\n\s]+)', '', data).split(',')
+        temp = re.sub(r'([\r\n\s\t]+)', '', data).split(',')
         temp = list(set(temp))
         temp = sorted(list(filter(lambda br: len(br) == 2,
                                   [br.split('-') for br in temp])),
