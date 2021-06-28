@@ -86,6 +86,16 @@ class Graph:
         self.vertices.append(island)
         return island
 
+    def is_oriental_graph(self):
+        """ Check if the graph is oriented """
+        matrix = self.create_adjacency_matrix()
+        for j in range(len(matrix)):
+            for i in range(j+1, len(matrix)):
+                if matrix[i][j] != matrix[j][i]:
+                    return True
+
+        return False
+
     def parse_graph(self, data):
         """
             Parsed graph from the received string (used on the site)
@@ -107,7 +117,7 @@ class Graph:
 
             TODO: consider adding to only one vertex
         """
-        if len(vertex1) < 1 or len(vertex2) < 1:
+        if len(str(vertex1)) < 1 or len(str(vertex2)) < 1:
             return
 
         isl1 = self.get_or_create_island(vertex1)
@@ -124,7 +134,7 @@ class Graph:
 
     def multiple_add_to_graph(self, vertices: list):
         """ Method to add multiple vertices """
-        check = list(filter(lambda x: (len(x) == 2 and len(x[0]) > 0 and len(x[1]) > 0), vertices))
+        check = list(filter(lambda x: (len(x) == 2 and len(str(x[0])) > 0 and len(str(x[1])) > 0), vertices))
         for vertex in check:
             self.add_to_graph(vertex[0], vertex[1])
 
