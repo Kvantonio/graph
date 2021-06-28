@@ -125,6 +125,15 @@ class TestGraph(unittest.TestCase):
             }
         )
 
+    def test_vertex_is_isolated(self):
+        self.graph.parse_graph('A-C, A-D, B-A')
+        self.graph.add_one_vertex('F')
+        self.assertEqual(self.graph.is_isolated_vertex('F'), True)
+
+    def test_vertex_is_not_isolated(self):
+        self.graph.parse_graph('A-C, A-D, B-A')
+        self.assertEqual(self.graph.is_isolated_vertex('A'), False)
+
 
 if __name__ == '__main__':
     unittest.main()
