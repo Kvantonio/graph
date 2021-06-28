@@ -30,6 +30,10 @@ class TestGraph(unittest.TestCase):
         ])
         self.assertEqual(self.graph.get_name_vertices(), ['A', 'B', 'C'])
 
+    def test_multiple_add_int(self):
+        self.graph.multiple_add_to_graph([[1, 2], [2, 1]])
+        self.assertEqual(self.graph.get_name_vertices(), [1, 2])
+
     def test_multiple_add_one(self):
         self.graph.multiple_add_to_graph([
             ['A', 'A']
