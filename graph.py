@@ -15,7 +15,7 @@ class Vertex:
         self.connections = []
         self.color = None
 
-    def get_name_of_connections(self):
+    def get_name_of_connections(self) -> [str]:
         """ get name of connections with this vertex (str) not objects """
         return [x.name for x in self.connections]
 
@@ -43,19 +43,19 @@ class Graph:
         self.vertices = []
         self.bridges = []
 
-    def get_vertices(self) -> object:
+    def get_vertices(self) -> [object]:
         """ Return all vertices on this graph """
         return self.vertices
 
-    def get_name_vertices(self):
+    def get_name_vertices(self) -> [str]:
         """ Return all vertices names on this graph """
         return [x.name for x in self.vertices]
 
-    def get_bridges(self) -> list:
+    def get_bridges(self) -> [[str, str]]:
         """ Return list of bridges between of vertices"""
         return self.bridges
 
-    def find_vertex_in_graph(self, name):
+    def find_vertex_in_graph(self, name) -> object:
         """
             Get name of vertex and return the vertex (object) if it exist
             else return None
@@ -67,7 +67,7 @@ class Graph:
                 return item
         return None
 
-    def get_or_create_island(self, name):
+    def get_or_create_island(self, name) -> object:
         """
             get name of vertex and return it if vertex find
             else create vertex with this name
@@ -92,9 +92,8 @@ class Graph:
         """
         temp = re.sub(r'([\r\n\s\t]+)', '', data).split(',')
         temp = list(set(temp))
-        temp = sorted(list(filter(lambda br: len(br) == 2,
-                                  [br.split('-') for br in temp])),
-                      key=lambda x: (x[0], x[1]))
+        temp = list(filter(lambda br: len(br) == 2,
+                                  [br.split('-') for br in temp]))
 
         for bridge in temp:
             self.add_to_graph(bridge[0], bridge[1])
@@ -105,6 +104,8 @@ class Graph:
             Add vertex2 to connections vertex1.
             Vertex2 if it was created has no connections
             but will be added to graph.
+
+            TODO: consider adding to only one vertex
         """
         if len(vertex1) < 1 or len(vertex2) < 1:
             return
@@ -128,7 +129,10 @@ class Graph:
             self.add_to_graph(vertex[0], vertex[1])
 
     def calc_degree(self):
-        """ Calculates the degree of the vertices of the graph"""
+        """
+            Calculates the degree of the vertices of the graph
+            TODO: correctly calc degree for oriental or non-oriental graph
+        """
         return {x.name: len(x.connections) for x in self.vertices}
 
     def create_adjacency_matrix(self):
@@ -173,8 +177,8 @@ class Graph:
             Immediately uses the creation method so no
             data transfer is required.
 
-            !!! TODO: remake the method so that it can accept a matrix
-            !!! TODO: correctly display degree for oriental graph
+            TODO: remake the method so that it can accept a matrix
+            !!! TODO: correctly display for oriental and non-oriental graph
         """
         temp = self.create_incidence_matrix()
         res = list([[''] + ['q' + str(i + 1)
