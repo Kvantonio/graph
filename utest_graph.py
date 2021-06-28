@@ -18,6 +18,11 @@ class TestGraph(unittest.TestCase):
         self.graph.add_to_graph('D', 'D')
         self.assertEqual(self.graph.get_name_vertices(), ['D'])
 
+    def test_add_int(self):
+        self.graph.add_to_graph(2, 3)
+        self.graph.add_to_graph(1, 3)
+        self.assertEqual(self.graph.get_name_vertices(), [1, 2, 3])
+
     def test_add_nothing(self):
         self.graph.add_to_graph('', '')
         self.assertEqual(self.graph.get_name_vertices(), [])
