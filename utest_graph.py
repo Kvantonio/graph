@@ -68,6 +68,22 @@ class TestGraph(unittest.TestCase):
                 [1, 0, 0]
             ])
 
+    def test_adjacency_matrix_hard(self):
+        self.graph.parse_graph('А-Б, А-В, В-Б, В-Ж,'
+                               + 'В-Е, В-Г, Б-Д, Б-Г,'
+                               + 'Г-Д, Д-Ж, Г-Ж, Е-Ж')
+        self.assertEqual(
+            self.graph.create_adjacency_matrix()
+            , [
+                [0, 1, 1, 0, 0, 0, 0],
+                [0, 0, 0, 1, 1, 0, 0],
+                [0, 1, 0, 1, 0, 1, 1],
+                [0, 0, 0, 0, 1, 0, 1],
+                [0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 1],
+                [0, 0, 0, 0, 0, 0, 0],
+            ])
+
 
 if __name__ == '__main__':
     unittest.main()

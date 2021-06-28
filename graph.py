@@ -131,7 +131,7 @@ class Graph:
     def calc_degree(self):
         """
             Calculates the degree of the vertices of the graph
-            TODO: correctly calc degree for oriental or non-oriental graph
+            !!! TODO: correctly calc degree for oriental or non-oriental graph
         """
         return {x.name: len(x.connections) for x in self.vertices}
 
@@ -151,7 +151,7 @@ class Graph:
             Immediately uses the creation method so no
             data transfer is required.
 
-            !!! TODO: remake the method so that it can accept a matrix
+            TODO: remake the method so that it can accept a matrix
         """
         temp = self.create_adjacency_matrix()
         res = [[''] + list(self.get_name_vertices())] + \
@@ -178,7 +178,7 @@ class Graph:
             data transfer is required.
 
             TODO: remake the method so that it can accept a matrix
-            !!! TODO: correctly display for oriental and non-oriental graph
+            ! TODO: correctly display for oriental and non-oriental graph
         """
         temp = self.create_incidence_matrix()
         res = list([[''] + ['q' + str(i + 1)
@@ -220,6 +220,3 @@ class Graph:
     def dfs(self, bridge):
         """ depth-first search for graph """
         pass
-
-# g = Graph()
-# g.parseGraph('А-Б, А-В, В-Б, В-Ж, В-Е, В-Г, Б-Д, Б-Г, Г-Д, Д-Ж, Г-Ж, Е-Ж')
