@@ -9,6 +9,12 @@ import re  # noqa: I201, I100
 from graphviz import Digraph  # noqa: I201, I100
 
 
+# TODO: create a graph using adjacency matrix
+# TODO: create a graph using adjacency list
+# TODO: rename function "add to graph" to "add pair"
+# !! TODO: Test all graph methods
+
+
 class Vertex:
     """ Class for work and storing data of the vertex of the graph """
 
@@ -32,7 +38,10 @@ class Vertex:
         return False
 
     def add_connection(self, connection):
-        """ add NEW connection with this vertex, if vertex is exist nothing happens """
+        """
+            Add NEW connection with this vertex,
+            if vertex is exist nothing happens
+        """
         if not self.find_connection(connection):
             self.connections.append(connection)
             self.connections = sorted(self.connections,
@@ -87,6 +96,7 @@ class Graph:
 
         island = Vertex(name)
         self.vertices.append(island)
+        self.vertices = sorted(self.vertices, key=lambda x: x.name)
         return island
 
     def is_oriental_graph(self):
@@ -128,7 +138,6 @@ class Graph:
         isl2 = self.get_or_create_island(vertex2)
 
         isl1.add_connection(isl2)
-        self.vertices = sorted(self.vertices, key=lambda x: x.name)
 
         self.bridges.append([vertex1, vertex2])
         self.bridges = sorted(
@@ -137,13 +146,11 @@ class Graph:
         )
 
     def add_one_vertex(self, name):
-        """ Create one vertex without conection"""
+        """ Create one vertex without connection"""
         if len(str(name)) < 1:
             return
 
         self.get_or_create_island(name)
-
-        self.vertices = sorted(self.vertices, key=lambda x: x.name)
 
     def multiple_add_to_graph(self, vertices: list):
         """ Method to add multiple vertices """
@@ -185,7 +192,9 @@ class Graph:
 
     def create_incidence_matrix(self):
         """ Create graph incidence matrix """
-        res = [[0 for _ in range(sum(list(map(lambda x: len(x.connections), self.vertices))))]
+        res = [[0 for _ in range(sum(list(map(
+            lambda x: len(x.connections),
+            self.vertices))))]
                for _ in self.get_name_vertices()]
 
         for i in range(len(self.get_name_vertices())):
