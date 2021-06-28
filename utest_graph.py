@@ -101,6 +101,18 @@ class TestGraph(unittest.TestCase):
             ['A', 'B', 'D', 'E', 'F', 'C']
         )
 
+    def test_vertices_images(self):
+        self.graph.parse_graph('A-C, A-D, B-A, B-D')
+        self.assertEqual(
+            self.graph.get_vertices_image(),
+            {
+                'A': ['C', 'D'],
+                'B': ['A', 'D'],
+                'C': [],
+                'D': []
+            }
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
