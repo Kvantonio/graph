@@ -247,8 +247,8 @@ class Graph:
         visited = []
 
         def f(vertex):
-            if vertex not in visited:
-                visited.append(vertex)
+            if vertex.name not in visited:
+                visited.append(vertex.name)
                 for node in vertex.connections:
                     f(node)
 

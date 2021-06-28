@@ -93,6 +93,14 @@ class TestGraph(unittest.TestCase):
                 [0, 0, 0, 0, 0, 0, 0],
             ])
 
+    def test_dfs_easy(self):
+        self.graph.parse_graph('A-B, A-C, B-D, B-E, C-F, E-F')
+
+        self.assertEqual(
+            self.graph.dfs("A"),
+            ['A', 'B', 'D', 'E', 'F', 'C']
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
