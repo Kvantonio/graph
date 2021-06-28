@@ -1,15 +1,22 @@
 """
     Module for working with graph
 """
+from io import BytesIO
+
+import pandas as pd
+import networkx as nx
+import matplotlib.pyplot as plt
 
 import base64  # noqa: I201, I100
 import re  # noqa: I201, I100
 
 from graphviz import Digraph  # noqa: I201, I100
+from graphviz import Graph as Noneoriental_graph
 
 
 class Vertex:
     """ Class for work and storing data of the vertex of the graph """
+
     def __init__(self, name):
         self.name = name
         self.connections = []
@@ -39,6 +46,7 @@ class Vertex:
 
 class Graph:
     """ Class for working and displaying the graph """
+
     def __init__(self):
         self.vertices = []
         self.bridges = []
@@ -55,7 +63,7 @@ class Graph:
         """ Return list of bridges between of vertices"""
         return self.bridges
 
-    def find_vertex_in_graph(self, name) -> object:
+    def find_vertex_in_graph(self, name):
         """
             Get name of vertex and return the vertex (object) if it exist
             else return None
@@ -90,7 +98,7 @@ class Graph:
         """ Check if the graph is oriented """
         matrix = self.create_adjacency_matrix()
         for j in range(len(matrix)):
-            for i in range(j+1, len(matrix)):
+            for i in range(j + 1, len(matrix)):
                 if matrix[i][j] != matrix[j][i]:
                     return True
 
@@ -103,7 +111,7 @@ class Graph:
         temp = re.sub(r'([\r\n\s\t]+)', '', data).split(',')
         temp = list(set(temp))
         temp = list(filter(lambda br: len(br) == 2,
-                                  [br.split('-') for br in temp]))
+                           [br.split('-') for br in temp]))
 
         for bridge in temp:
             self.add_to_graph(bridge[0], bridge[1])
@@ -211,7 +219,10 @@ class Graph:
         return res
 
     def draw_graph(self):
-        """ Creates a graph for displaying in the site) """
+        """
+            Creates a graph for displaying in the site)
+            TODO: create draw for non-oriental graph
+        """
         file = Digraph('graph', filename='static/fsm.gv',
                        node_attr={'color': 'lightblue2',
                                   'style': 'filled', 'shape': 'circle'})
@@ -227,6 +238,19 @@ class Graph:
         encoded = base64.b64encode(temp_file).decode('utf-8')
         return encoded
 
-    def dfs(self, bridge):
+    def dfs(self, vertex_name):
         """ depth-first search for graph """
-        pass
+        start_vertex = self.find_vertex_in_graph(vertex_name)
+        if not start_vertex:
+            return None
+
+        visited = []
+
+        def f(vertex):
+            if vertex not in visited:
+                visited.append(vertex)
+                for node in vertex.connections:
+                    f(node)
+
+        f(start_vertex)
+        return visited
