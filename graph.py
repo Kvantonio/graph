@@ -8,7 +8,7 @@ import re  # noqa: I201, I100
 
 from graphviz import Digraph  # noqa: I201, I100
 
-
+# !!!! TODO: add to bridges weight
 # TODO: create a graph using adjacency matrix
 # TODO: create a graph using adjacency list
 # TODO: rename function "add to graph" to "add pair"
